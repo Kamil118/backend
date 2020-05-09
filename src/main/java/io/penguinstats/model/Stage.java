@@ -3,27 +3,21 @@ package io.penguinstats.model;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
-import io.penguinstats.enums.Server;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter
+@Setter
 @Document(collection = "stage_v2")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Stage implements Serializable {
@@ -38,15 +32,24 @@ public class Stage implements Serializable {
 	private String stageId;
 	private String zoneId;
 	private String code;
-	@JsonProperty("code_i18n")
-	private Map<Server, String> codeMap;
 	private Integer apCost;
 	private Boolean isGacha;
-	@Transient
-	private List<DropInfo> dropInfos;
 	private List<String> normalDrop;
 	private List<String> specialDrop;
 	private List<String> extraDrop;
+
+	public Stage(String stageType, String stageId, String zoneId, String code, Integer apCost, Boolean isGacha,
+			List<String> normalDrop, List<String> specialDrop, List<String> extraDrop) {
+		this.stageType = stageType;
+		this.stageId = stageId;
+		this.zoneId = zoneId;
+		this.code = code;
+		this.apCost = apCost;
+		this.isGacha = isGacha;
+		this.normalDrop = normalDrop;
+		this.specialDrop = specialDrop;
+		this.extraDrop = extraDrop;
+	}
 
 	@JsonIgnore
 	public Set<String> getDropsSet() {
@@ -59,20 +62,6 @@ public class Stage implements Serializable {
 			set.addAll(this.extraDrop);
 		set.add("furni");
 		return set;
-	}
-
-	@JsonIgnore
-	public Stage toLegacyView() {
-		this.dropInfos = null;
-		return this;
-	}
-
-	@JsonIgnore
-	public Stage toNewView() {
-		this.normalDrop = null;
-		this.specialDrop = null;
-		this.extraDrop = null;
-		return this;
 	}
 
 }

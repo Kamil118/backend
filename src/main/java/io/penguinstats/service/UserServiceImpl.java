@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import io.penguinstats.enums.UploadCountType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,6 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
 import io.penguinstats.dao.UserDao;
-import io.penguinstats.enums.UploadCountType;
 import io.penguinstats.model.User;
 
 @Service("userService")
@@ -74,8 +74,8 @@ public class UserServiceImpl implements UserService {
 	 */
 	@Override
 	public String createNewUser(String userID, String ip) {
-		saveUser(new User(null, userID, 1.0, new ArrayList<>(), ip != null ? Arrays.asList(ip) : new ArrayList<>(),
-				null, System.currentTimeMillis(), null, null));
+		saveUser(new User(userID, 1.0, new ArrayList<>(), ip != null ? Arrays.asList(ip) : new ArrayList<>(), null,
+				System.currentTimeMillis()));
 		logger.info("new user " + userID + " is created");
 		return userID;
 	}
@@ -148,8 +148,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void updateWeightByUploadRange(Integer lower, Integer upper, UploadCountType type, Double weight) {
 		String typeName = type.getName();
-		Query query = (upper != null) ? new Query(Criteria.where(typeName).gt(lower).lt(upper))
-				: new Query(Criteria.where(typeName).gt(lower));
+		Query query = (upper != null) ? new Query(Criteria.where(typeName).gt(lower).lt(upper)) : new Query(Criteria.where(typeName).gt(lower));
 		Update update = new Update();
 		update.set("weight", weight);
 		mongoTemplate.updateMulti(query, update, User.class);

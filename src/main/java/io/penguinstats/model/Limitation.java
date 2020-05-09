@@ -16,13 +16,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter
+@Setter
 @Document(collection = "limitation")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Limitation implements Serializable {
@@ -37,6 +35,14 @@ public class Limitation implements Serializable {
 	private Bounds itemTypeBounds; // EXCLUDE furniture.
 	private List<ItemQuantityBounds> itemQuantityBounds;
 	private List<String> inheritance;
+
+	public Limitation(String name, Bounds itemTypeBounds, List<ItemQuantityBounds> itemQuantityBounds,
+			List<String> inheritance) {
+		this.name = name;
+		this.itemTypeBounds = itemTypeBounds;
+		this.itemQuantityBounds = itemQuantityBounds;
+		this.inheritance = inheritance;
+	}
 
 	/**
 	 * @Title: getItemQuantityBoundsMap
@@ -61,8 +67,6 @@ public class Limitation implements Serializable {
 	 * @return void
 	 */
 	public void merge(Limitation otherLimitation) {
-		if (otherLimitation == null)
-			return;
 		if (this.itemTypeBounds == null && otherLimitation.itemTypeBounds != null)
 			this.itemTypeBounds = otherLimitation.itemTypeBounds;
 

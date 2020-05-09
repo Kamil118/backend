@@ -1,5 +1,7 @@
 package io.penguinstats.configuration;
 
+import java.util.ArrayList;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -10,11 +12,9 @@ import com.google.common.base.Predicate;
 
 import io.swagger.annotations.ApiOperation;
 import springfox.documentation.RequestHandler;
-import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
@@ -29,11 +29,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
 	}
 
 	private ApiInfo apiInfo() {
-		return new ApiInfoBuilder().title("Penguin Statistics - REST APIs").description(
-				"Backend APIs for Arknights drop rate statistic website Penguin Statistics: https://penguin-stats.io/")
-				.contact(new Contact("AlvISs_Reimu", "https://github.com/AlvISsReimu", "alvissreimu@gmail.com"))
-				.license("MIT License").licenseUrl("https://github.com/penguin-statistics/backend/blob/master/LICENSE")
-				.version("2.0.0").build();
+		return new ApiInfo("Penguin Stats Backend API", "", "1.2.2", "", null, "", "", new ArrayList());
 	}
 
 	private Predicate<RequestHandler> apis() {
@@ -58,5 +54,4 @@ public class SwaggerConfig implements WebMvcConfigurer {
 				"/swagger-resources/configuration/security");
 		registry.addRedirectViewController("/swagger/swagger-resources", "/swagger-resources");
 	}
-
 }

@@ -11,13 +11,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter
+@Setter
 @Document(collection = "user")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class User implements Serializable {
@@ -37,7 +35,15 @@ public class User implements Serializable {
 	private Integer totalUpload = 0;
 	private Integer reliableUpload = 0;
 
-	@JsonIgnore
+	public User(String userID, Double weight, List<String> tags, List<String> ips, String comment, Long createTime) {
+		this.userID = userID;
+		this.weight = weight;
+		this.tags = tags;
+		this.ips = ips;
+		this.comment = comment;
+		this.createTime = createTime;
+	}
+
 	public boolean containsIp(String ip) {
 		if (this.ips == null)
 			return false;

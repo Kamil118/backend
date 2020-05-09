@@ -7,7 +7,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import io.penguinstats.constant.Constant.LastUpdateMapKeyName;
 import io.penguinstats.dao.ItemDao;
 import io.penguinstats.model.Item;
 import io.penguinstats.util.LastUpdateTimeUtil;
@@ -36,7 +35,7 @@ public class ItemServiceImpl implements ItemService {
 	@Override
 	public List<Item> getAllItems() {
 		List<Item> items = itemDao.findAll();
-		LastUpdateTimeUtil.setCurrentTimestamp(LastUpdateMapKeyName.ITEM_LIST);
+		LastUpdateTimeUtil.setCurrentTimestamp("itemList");
 		return items;
 	}
 
